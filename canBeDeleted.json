@@ -1,0 +1,1900 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 2,
+    "id": 43,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Quantity"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Share"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 0,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": false
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with t1 as (\n  select case\n           when State = 'doi' and EmailAgreement = 1 then 'DOI+NL'\n           else upper(State)\n         end Name\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'cockpit'\n    and _table = 'BlitzenData'\n    and FestivalId in (${festivalIds:sqlstring})\n),\nt2 as (\n  select count(Name) Total from t1\n)\nselect Name, count(Name) Quantity, cast(count(Name) as double) / Total Share\nfrom t1, t2\ngroup by 1, Total\norder by 1",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with t1 as (\\n  select case\\n           when State = 'doi' and EmailAgreement = 1 then 'DOI+NL'\\n           else upper(State)\\n         end Name\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'cockpit'\\n    and _table = 'BlitzenData'\\n    and FestivalId in (${festivalIds:sqlstring})\\n),\\nt2 as (\\n  select count(Name) Total from t1\\n)\\nselect Name, count(Name) Quantity, cast(count(Name) as double) / Total Share\\nfrom t1, t2\\ngroup by 1, Total\\norder by 1\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[]}}",
+            "refId": "A",
+            "settings": {
+              "contextParameters": []
+            }
+          }
+        ],
+        "title": "Registrations",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Quantity"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Share"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 5,
+          "y": 0
+        },
+        "id": 8,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": false
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with t1 as (\n  select ActivationName Name, Amount Quantity\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'cockpit'\n    and _table = 'ActivationView'\n    and EventId in (${festivalIds:sqlstring})\n),\nt2 as (\n  select sum(Quantity) Total from t1\n)\nselect Name, sum(Quantity) Quantity, cast(sum(Quantity) as double) / Total Share\nfrom t1, t2\ngroup by 1, Total\norder by 2 desc",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with t1 as (\\n  select ActivationName Name, Amount Quantity\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'cockpit'\\n    and _table = 'ActivationView'\\n    and EventId in (${festivalIds:sqlstring})\\n),\\nt2 as (\\n  select sum(Quantity) Total from t1\\n)\\nselect Name, sum(Quantity) Quantity, cast(sum(Quantity) as double) / Total Share\\nfrom t1, t2\\ngroup by 1, Total\\norder by 2 desc\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[]}}",
+            "refId": "A",
+            "settings": {
+              "contextParameters": []
+            }
+          }
+        ],
+        "title": "Activations",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Quantity"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Share"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 4,
+          "x": 10,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": false
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with t1 as (\n  select ProductName Name, Quantity\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'cockpit'\n    and _table = 'SalesView'\n    and Event in (${festivalIds:sqlstring})\n    and Discriminator = 'Sales'\n),\nt2 as (\n  select sum(Quantity) Total from t1\n)\nselect Name, sum(Quantity) Quantity, sum(Quantity) / Total Share\nfrom t1, t2\ngroup by 1, Total\norder by 2 desc",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with t1 as (\\n  select ProductName Name, Quantity\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'cockpit'\\n    and _table = 'SalesView'\\n    and Event in (${festivalIds:sqlstring})\\n    and Discriminator = 'Sales'\\n),\\nt2 as (\\n  select sum(Quantity) Total from t1\\n)\\nselect Name, sum(Quantity) Quantity, sum(Quantity) / Total Share\\nfrom t1, t2\\ngroup by 1, Total\\norder by 2 desc\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[{\"name\":\"enableWindowing\",\"value\":\"true\"}]}}",
+            "refId": "A",
+            "settings": {
+              "contextParameters": [
+                {
+                  "name": "enableWindowing",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Sales",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Quantity"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Share"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 14,
+          "y": 0
+        },
+        "id": 9,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": false
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with t1 as (\n  select ProductName Name, Quantity\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'cockpit'\n    and _table = 'SalesView'\n    and Event in (${festivalIds:sqlstring})\n    and Discriminator = 'PackSampling'\n),\nt2 as (\n  select sum(Quantity) Total from t1\n)\nselect Name, sum(Quantity) Quantity, sum(Quantity) / Total Share\nfrom t1, t2\ngroup by 1, Total\norder by 2 desc",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with t1 as (\\n  select ProductName Name, Quantity\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'cockpit'\\n    and _table = 'SalesView'\\n    and Event in (${festivalIds:sqlstring})\\n    and Discriminator = 'PackSampling'\\n),\\nt2 as (\\n  select sum(Quantity) Total from t1\\n)\\nselect Name, sum(Quantity) Quantity, sum(Quantity) / Total Share\\nfrom t1, t2\\ngroup by 1, Total\\norder by 2 desc\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[]}}",
+            "refId": "A",
+            "settings": {
+              "contextParameters": []
+            }
+          }
+        ],
+        "title": "Samples",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Quantity"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Share"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 60
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 5,
+          "x": 19,
+          "y": 0
+        },
+        "id": 7,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": false
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with t1 as (\n  select ProductName Name, Quantity\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'cockpit'\n    and _table = 'SalesView'\n    and Event in (${festivalIds:sqlstring})\n    and Discriminator = 'Giveaway'\n),\nt2 as (\n  select sum(Quantity) Total from t1\n)\nselect Name, sum(Quantity) Quantity, sum(Quantity) / Total Share\nfrom t1, t2\ngroup by 1, Total\norder by 2 desc",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with t1 as (\\n  select ProductName Name, Quantity\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'cockpit'\\n    and _table = 'SalesView'\\n    and Event in (${festivalIds:sqlstring})\\n    and Discriminator = 'Giveaway'\\n),\\nt2 as (\\n  select sum(Quantity) Total from t1\\n)\\nselect Name, sum(Quantity) Quantity, sum(Quantity) / Total Share\\nfrom t1, t2\\ngroup by 1, Total\\norder by 2 desc\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[]}}",
+            "refId": "A",
+            "settings": {
+              "contextParameters": []
+            }
+          }
+        ],
+        "title": "Give-Aways",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "decimals": 15,
+            "links": [
+              {
+                "targetBlank": false,
+                "title": "Select",
+                "url": "?orgId=${__org:id}&${__url_time_range}&var-festivalIds=${__data.fields.FestivalId}"
+              },
+              {
+                "targetBlank": false,
+                "title": "Select & drill down",
+                "url": "?orgId=${__org:id}&${__data.fields.UrlTimeRange}&var-festivalIds=${__data.fields.FestivalId}"
+              },
+              {
+                "title": "Select & drill up",
+                "url": "?orgId=${__org:id}&var-festivalIds=${__data.fields.FestivalId}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "UrlTimeRange"
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": true,
+                    "viz": false
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "FestivalId"
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": true,
+                    "viz": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 5,
+          "x": 0,
+          "y": 9
+        },
+        "id": 15,
+        "options": {
+          "basemap": {
+            "config": {
+              "server": "topo"
+            },
+            "name": "Layer 0",
+            "opacity": 1,
+            "tooltip": false,
+            "type": "esri-xyz"
+          },
+          "controls": {
+            "mouseWheelZoom": true,
+            "showAttribution": false,
+            "showDebug": false,
+            "showMeasure": false,
+            "showScale": false,
+            "showZoom": true
+          },
+          "layers": [
+            {
+              "config": {
+                "showLegend": false,
+                "style": {
+                  "color": {
+                    "fixed": "red"
+                  },
+                  "opacity": 1,
+                  "rotation": {
+                    "fixed": 0,
+                    "max": 360,
+                    "min": -360,
+                    "mode": "mod"
+                  },
+                  "size": {
+                    "fixed": 10,
+                    "max": 15,
+                    "min": 2
+                  },
+                  "symbol": {
+                    "fixed": "img/icons/marker/star.svg",
+                    "mode": "fixed"
+                  },
+                  "symbolAlign": {
+                    "horizontal": "center",
+                    "vertical": "center"
+                  },
+                  "text": {
+                    "field": "Name",
+                    "fixed": "",
+                    "mode": "field"
+                  },
+                  "textConfig": {
+                    "fontSize": 12,
+                    "offsetX": 7,
+                    "offsetY": 0,
+                    "textAlign": "left",
+                    "textBaseline": "bottom"
+                  }
+                }
+              },
+              "location": {
+                "mode": "auto"
+              },
+              "name": "Location",
+              "tooltip": true,
+              "type": "markers"
+            }
+          ],
+          "tooltip": {
+            "mode": "details"
+          },
+          "view": {
+            "allLayers": true,
+            "id": "fit",
+            "lastOnly": false,
+            "lat": 51.329655,
+            "layer": "Layer 1",
+            "lon": 9.936169,
+            "padding": 50,
+            "zoom": 10
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "select\n  concat(time_format(cast(startDateTime as timestamp), 'dd.MM. HH:mm'), ' - ', time_format(__time, 'dd.MM. HH:mm')) \"When\",\n  name Name,\n  concat(json_value(a.address, '$.street'), ' ', json_value(a.address, '$.houseNumber')) Address,\n  concat(json_value(a.address, '$.zip'), ' ', json_value(a.address, '$.city')) Town,\n  concat(actualVisitors / 1000, 'k/', expectedVisitors / 1000, 'k (', round(100 * actualVisitors / expectedVisitors), '%)') \"Act/Exp Visitors\",\n  json_value(a.address, '$.location.lat' returning double) Latitude,\n  json_value(a.address, '$.location.lon' returning double) Longitude,\n  concat(\n    'from=', timestamp_to_millis(cast(startDateTime as timestamp) - interval '12' hours),\n    '&to=', timestamp_to_millis(cast(endDateTime as timestamp) + interval '12' hours)\n  ) UrlTimeRange,\n  externalId FestivalId\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\n  and '${__from:date}' <= __time\n  and _schema = 'api'\n  and _table = 'event'\n  and externalId in (${festivalIds:sqlstring})\n",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select\\n  concat(time_format(cast(startDateTime as timestamp), 'dd.MM. HH:mm'), ' - ', time_format(__time, 'dd.MM. HH:mm')) \\\"When\\\",\\n  name Name,\\n  concat(json_value(a.address, '$.street'), ' ', json_value(a.address, '$.houseNumber')) Address,\\n  concat(json_value(a.address, '$.zip'), ' ', json_value(a.address, '$.city')) Town,\\n  concat(actualVisitors / 1000, 'k/', expectedVisitors / 1000, 'k (', round(100 * actualVisitors / expectedVisitors), '%)') \\\"Act/Exp Visitors\\\",\\n  json_value(a.address, '$.location.lat' returning double) Latitude,\\n  json_value(a.address, '$.location.lon' returning double) Longitude,\\n  concat(\\n    'from=', timestamp_to_millis(cast(startDateTime as timestamp) - interval '12' hours),\\n    '&to=', timestamp_to_millis(cast(endDateTime as timestamp) + interval '12' hours)\\n  ) UrlTimeRange,\\n  externalId FestivalId\\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n  and externalId in (${festivalIds:sqlstring})\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+            "hide": false,
+            "refId": "A",
+            "settings": {}
+          }
+        ],
+        "title": "Festival Locations",
+        "transparent": true,
+        "type": "geomap"
+      },
+      {
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "open-meteo-archive-api"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": true,
+              "axisCenteredZero": false,
+              "axisColorMode": "series",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 1,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "smooth",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Temperature"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "orange",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Precipitation"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.drawStyle",
+                  "value": "bars"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "unit",
+                  "value": "lengthmm"
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 100
+                },
+                {
+                  "id": "min",
+                  "value": 0.1
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Wind Speed"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "unit",
+                  "value": "velocitykmh"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Apparent Temperature"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "auto"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "celsius"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Relative Humidity"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "left"
+                },
+                {
+                  "id": "unit",
+                  "value": "percent"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "purple",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "__systemRef": "hideSeriesFrom",
+              "matcher": {
+                "id": "byNames",
+                "options": {
+                  "mode": "exclude",
+                  "names": [
+                    "Precipitation",
+                    "Temperature"
+                  ],
+                  "prefix": "All except:",
+                  "readOnly": true
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 14,
+          "x": 5,
+          "y": 9
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "cacheDurationSeconds": 300,
+            "datasource": {
+              "type": "marcusolsson-json-datasource",
+              "uid": "open-meteo-archive-api"
+            },
+            "fields": [
+              {
+                "jsonPath": "$distinct(hourly.time)",
+                "language": "jsonata",
+                "name": "Time",
+                "type": "time"
+              },
+              {
+                "jsonPath": "$map($zip(hourly.time, hourly.temperature_2m), function ($v) {\n  { \"time\": $v[0], \"temp\": $v[1] }\n}){ time: $average(temp) }\n.$each(function ($v, $k) {\n  $v\n})",
+                "language": "jsonata",
+                "name": "Temperature",
+                "type": "number"
+              },
+              {
+                "jsonPath": "$map($zip(hourly.time, hourly.apparent_temperature), function ($v) {\n  { \"time\": $v[0], \"temp\": $v[1] }\n}){ time: $average(temp) }\n.$each(function ($v, $k) {\n  $v\n})",
+                "language": "jsonata",
+                "name": "Apparent Temperature",
+                "type": "number"
+              },
+              {
+                "jsonPath": "$map($zip(hourly.time, hourly.relative_humidity_2m), function ($v) {\n  { \"time\": $v[0], \"humid\": $v[1] }\n}){ time: $average(humid) }\n.$each(function ($v, $k) {\n  $v\n})",
+                "language": "jsonata",
+                "name": "Relative Humidity",
+                "type": "number"
+              },
+              {
+                "jsonPath": "$map($zip(hourly.time, hourly.precipitation), function ($v) {\n  { \"time\": $v[0], \"preci\": $v[1] }\n}){ time: $average(preci) }\n.$each(function ($v, $k) {\n  $v\n})",
+                "language": "jsonata",
+                "name": "Precipitation",
+                "type": "number"
+              },
+              {
+                "jsonPath": "$map($zip(hourly.time, hourly.wind_speed_10m), function ($v) {\n  { \"time\": $v[0], \"wind\": $v[1] }\n}){ time: $average(wind) }\n.$each(function ($v, $k) {\n  $v\n})",
+                "language": "jsonata",
+                "name": "Wind Speed",
+                "type": "number"
+              }
+            ],
+            "hide": false,
+            "method": "GET",
+            "params": [
+              [
+                "latitude",
+                "$latitudes"
+              ],
+              [
+                "longitude",
+                "$longitudes"
+              ],
+              [
+                "start_date",
+                "${__from:date:YYYY-MM-DD}"
+              ],
+              [
+                "end_date",
+                "${__to:date:YYYY-MM-DD}"
+              ],
+              [
+                "hourly",
+                "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,wind_speed_10m"
+              ],
+              [
+                "timezone",
+                "$__timezone"
+              ]
+            ],
+            "queryParams": "",
+            "refId": "A",
+            "urlPath": ""
+          }
+        ],
+        "title": "Weather Report",
+        "transparent": true,
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              }
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 22,
+          "w": 5,
+          "x": 19,
+          "y": 9
+        },
+        "id": 14,
+        "options": {
+          "calculate": false,
+          "calculation": {
+            "xBuckets": {
+              "mode": "count",
+              "value": ""
+            },
+            "yBuckets": {
+              "mode": "count",
+              "scale": {
+                "type": "linear"
+              },
+              "value": "24"
+            }
+          },
+          "cellGap": 1,
+          "cellValues": {
+            "unit": "short"
+          },
+          "color": {
+            "exponent": 0.5,
+            "fill": "dark-orange",
+            "mode": "scheme",
+            "reverse": false,
+            "scale": "exponential",
+            "scheme": "Spectral",
+            "steps": 64
+          },
+          "exemplars": {
+            "color": "green"
+          },
+          "filterValues": {
+            "le": 0
+          },
+          "legend": {
+            "show": true
+          },
+          "rowsFrame": {
+            "layout": "ge",
+            "value": "Footfalls"
+          },
+          "tooltip": {
+            "mode": "none",
+            "showColorScale": false,
+            "yHistogram": false
+          },
+          "yAxis": {
+            "axisPlacement": "left",
+            "reverse": true
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with\nt1 as (\n  select\n    time_parse(time_format(__time + interval '1' day, 'yyyy-MM-dd', '$__timezone'), 'yyyy-MM-dd', '$__timezone') \"day\",\n    time_extract(__time, 'hour', '$__timezone') \"hour\",\n    count(*) footfalls\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'raw'\n    and _table = '__bsure__livia'\n    and type = 'footfall'\n    and deviceId in (${deviceIds:sqlstring})\n  group by 1, 2\n)\nselect *\nfrom t1\npivot (max(footfalls)\n  for \"hour\" in (\n    0 \"00:00\",\n    1 \"01:00\",\n    2 \"02:00\",\n    3 \"03:00\",\n    4 \"04:00\",\n    5 \"05:00\",\n    6 \"06:00\",\n    7 \"07:00\",\n    8 \"08:00\",\n    9 \"09:00\",\n    10 \"10:00\",\n    11 \"11:00\",\n    12 \"12:00\",\n    13 \"13:00\",\n    14 \"14:00\",\n    15 \"15:00\",\n    16 \"16:00\",\n    17 \"17:00\",\n    18 \"18:00\",\n    19 \"19:00\",\n    20 \"20:00\",\n    21 \"21:00\",\n    22 \"22:00\",\n    23 \"23:00\"\n  ))\n",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with\\nt1 as (\\n  select\\n    time_parse(time_format(__time + interval '1' day, 'yyyy-MM-dd', '$__timezone'), 'yyyy-MM-dd', '$__timezone') \\\"day\\\",\\n    time_extract(__time, 'hour', '$__timezone') \\\"hour\\\",\\n    count(*) footfalls\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'raw'\\n    and _table = '__bsure__livia'\\n    and type = 'footfall'\\n    and deviceId in (${deviceIds:sqlstring})\\n  group by 1, 2\\n)\\nselect *\\nfrom t1\\npivot (max(footfalls)\\n  for \\\"hour\\\" in (\\n    0 \\\"00:00\\\",\\n    1 \\\"01:00\\\",\\n    2 \\\"02:00\\\",\\n    3 \\\"03:00\\\",\\n    4 \\\"04:00\\\",\\n    5 \\\"05:00\\\",\\n    6 \\\"06:00\\\",\\n    7 \\\"07:00\\\",\\n    8 \\\"08:00\\\",\\n    9 \\\"09:00\\\",\\n    10 \\\"10:00\\\",\\n    11 \\\"11:00\\\",\\n    12 \\\"12:00\\\",\\n    13 \\\"13:00\\\",\\n    14 \\\"14:00\\\",\\n    15 \\\"15:00\\\",\\n    16 \\\"16:00\\\",\\n    17 \\\"17:00\\\",\\n    18 \\\"18:00\\\",\\n    19 \\\"19:00\\\",\\n    20 \\\"20:00\\\",\\n    21 \\\"21:00\\\",\\n    22 \\\"22:00\\\",\\n    23 \\\"23:00\\\"\\n  ))\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+            "hide": false,
+            "refId": "Footfalls",
+            "settings": {}
+          }
+        ],
+        "title": "Footfall Heatmap",
+        "transparent": true,
+        "type": "heatmap"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": true,
+              "axisCenteredZero": true,
+              "axisColorMode": "series",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 1,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepAfter",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Promoters On Duty"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Visitors"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.drawStyle",
+                  "value": "bars"
+                },
+                {
+                  "id": "custom.gradientMode",
+                  "value": "opacity"
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 100
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Registrations"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.drawStyle",
+                  "value": "bars"
+                },
+                {
+                  "id": "custom.gradientMode",
+                  "value": "opacity"
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 100
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "left"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 14,
+          "x": 5,
+          "y": 18
+        },
+        "id": 16,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with\n  Shift as (\n    select\n      PromoterId,\n      cast(StartDate as timestamp) ShiftStart,\n      __time ShiftEnd\n    from fret_demo\n    where _schema = 'cockpit'\n      and _table = 'PromotersWorkingHours'\n      and FestivalId in (${festivalIds:sqlstring})\n  ),\n  Event as (\n    select Event\n    from Shift\n    unpivot (Event for Type in (ShiftStart, ShiftEnd))\n    where Event between '${__from:date}' and '${__to:date}'\n  )\nselect\n  Event \"Time\",\n  count(distinct PromoterId)\n    filter (where ShiftStart <= Event and Event < ShiftEnd) \"Value\"\nfrom Event, Shift\ngroup by 1\norder by 1",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with\\n  Shift as (\\n    select\\n      PromoterId,\\n      cast(StartDate as timestamp) ShiftStart,\\n      __time ShiftEnd\\n    from fret_demo\\n    where _schema = 'cockpit'\\n      and _table = 'PromotersWorkingHours'\\n      and FestivalId in (${festivalIds:sqlstring})\\n  ),\\n  Event as (\\n    select Event\\n    from Shift\\n    unpivot (Event for Type in (ShiftStart, ShiftEnd))\\n    where Event between '${__from:date}' and '${__to:date}'\\n  )\\nselect\\n  Event \\\"Time\\\",\\n  count(distinct PromoterId)\\n    filter (where ShiftStart <= Event and Event < ShiftEnd) \\\"Value\\\"\\nfrom Event, Shift\\ngroup by 1\\norder by 1\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[{\"name\":\"useApproximateCountDistinct\",\"value\":\"false\"}]}}",
+            "hide": false,
+            "refId": "Promoters On Duty",
+            "settings": {
+              "contextParameters": [
+                {
+                  "name": "useApproximateCountDistinct",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "select time_floor(__time, '$granularity') \"Time\",\n       count(*) \"Value\"\nfrom fret_demo\nwhere __time between '${__from:date}' and '${__to:date}'\n  and _schema = 'cockpit'\n  and _table = 'BlitzenData'\n  and FestivalId in (${festivalIds:sqlstring})\n  and State = 'doi'\n  and EmailAgreement = 1\ngroup by 1\norder by 1",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select time_floor(__time, '$granularity') \\\"Time\\\",\\n       count(*) \\\"Value\\\"\\nfrom fret_demo\\nwhere __time between '${__from:date}' and '${__to:date}'\\n  and _schema = 'cockpit'\\n  and _table = 'BlitzenData'\\n  and FestivalId in (${festivalIds:sqlstring})\\n  and State = 'doi'\\n  and EmailAgreement = 1\\ngroup by 1\\norder by 1\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+            "hide": false,
+            "refId": "Registrations",
+            "settings": {}
+          },
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "select time_floor(__time, '$granularity') \"Time\",\n       -count(distinct faceid) \"Value\"\nfrom fret_demo\nwhere __time between '${__from:date}' and '${__to:date}'\n  and _schema = 'raw'\n  and _table = '__bsure__livia'\n  and type = 'visit'\n  and deviceId in (${deviceIds:sqlstring})\n  and age >= 18\n  and gender in ('female', 'male')\ngroup by 1\norder by 1",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select time_floor(__time, '$granularity') \\\"Time\\\",\\n       -count(distinct faceid) \\\"Value\\\"\\nfrom fret_demo\\nwhere __time between '${__from:date}' and '${__to:date}'\\n  and _schema = 'raw'\\n  and _table = '__bsure__livia'\\n  and type = 'visit'\\n  and deviceId in (${deviceIds:sqlstring})\\n  and age >= 18\\n  and gender in ('female', 'male')\\ngroup by 1\\norder by 1\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[{\"name\":\"useApproximateCountDistinct\",\"value\":\"false\"}]}}",
+            "hide": false,
+            "refId": "Visitors",
+            "settings": {
+              "contextParameters": [
+                {
+                  "name": "useApproximateCountDistinct",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Promoters On Duty, Visitors And Registrations",
+        "transparent": true,
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "text",
+              "mode": "thresholds"
+            },
+            "custom": {
+              "axisBorderShow": true,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 0,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Women"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "purple",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Men"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 5,
+          "x": 0,
+          "y": 20
+        },
+        "id": 1,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.8,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [
+              "sum"
+            ],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "orientation": "auto",
+          "showValue": "never",
+          "stacking": "normal",
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          },
+          "xField": "Age",
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "\nwith t1 as (\n  select case\n           when 18 <= age and age < 20 then '18-19'\n           when 20 <= age and age < 30 then '20-29'\n           when 30 <= age and age < 40 then '30-39'\n           when 40 <= age and age < 50 then '40-49'\n           when 50 <= age and age < 60 then '50-59'\n           else '60+'\n         end Age,\n         gender Gender,\n         (case gender when 'female' then $femaleBias else 1 end) * count(distinct faceid) Faces\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'raw'\n    and _table = '__bsure__livia'\n    and type = 'visit'\n    and deviceId in (${deviceIds:sqlstring})\n    and age >= 18\n    and gender in ('female', 'male')\n  group by 1, 2\n),\nt2 as (\n  select sum(Faces) Total from t1\n),\nt3 as (\n  select Age, Gender, cast(sum(Faces) as double) / Total Share\n  from t1, t2\n  group by 1, 2, Total\n)\nselect *\nfrom t3\npivot (max(Share) for Gender in ('female' as Women, 'male' as Men))\norder by 1\n",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"\\nwith t1 as (\\n  select case\\n           when 18 <= age and age < 20 then '18-19'\\n           when 20 <= age and age < 30 then '20-29'\\n           when 30 <= age and age < 40 then '30-39'\\n           when 40 <= age and age < 50 then '40-49'\\n           when 50 <= age and age < 60 then '50-59'\\n           else '60+'\\n         end Age,\\n         gender Gender,\\n         (case gender when 'female' then $femaleBias else 1 end) * count(distinct faceid) Faces\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'raw'\\n    and _table = '__bsure__livia'\\n    and type = 'visit'\\n    and deviceId in (${deviceIds:sqlstring})\\n    and age >= 18\\n    and gender in ('female', 'male')\\n  group by 1, 2\\n),\\nt2 as (\\n  select sum(Faces) Total from t1\\n),\\nt3 as (\\n  select Age, Gender, cast(sum(Faces) as double) / Total Share\\n  from t1, t2\\n  group by 1, 2, Total\\n)\\nselect *\\nfrom t3\\npivot (max(Share) for Gender in ('female' as Women, 'male' as Men))\\norder by 1\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[{\"name\":\"useApproximateCountDistinct\",\"value\":\"false\"}]}}",
+            "refId": "A",
+            "settings": {
+              "contextParameters": [
+                {
+                  "name": "useApproximateCountDistinct",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Gender By Age Distribution Of Visitors",
+        "transparent": true,
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "type": "grafadruid-druid-datasource",
+          "uid": "fret-druid"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 5,
+          "x": 0,
+          "y": 26
+        },
+        "id": 2,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent"
+            ]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "with t1 as (\n  select timestampdiff(minute, time_parse(startTimestamp), time_parse(endTimestamp)) as minutes,\n         faceid\n  from fret_demo\n  where __time between '${__from:date}' and '${__to:date}'\n    and _schema = 'raw'\n    and _table = '__bsure__livia'\n    and type = 'visit'\n    and deviceId in (${deviceIds:sqlstring})\n    and age >= 18\n    and gender in ('female', 'male')\n)\nselect case\n         when 1 <= minutes and minutes < 5 then '1-5'\n         when 5 <= minutes and minutes < 20 then '5-20'\n         else '>20'\n       end minutes,\n       count(distinct faceid) visitors\nfrom t1\nwhere minutes >= 1\ngroup by 1\norder by 1",
+              "queryType": "sql"
+            },
+            "datasource": {
+              "type": "grafadruid-druid-datasource",
+              "uid": "fret-druid"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"with t1 as (\\n  select timestampdiff(minute, time_parse(startTimestamp), time_parse(endTimestamp)) as minutes,\\n         faceid\\n  from fret_demo\\n  where __time between '${__from:date}' and '${__to:date}'\\n    and _schema = 'raw'\\n    and _table = '__bsure__livia'\\n    and type = 'visit'\\n    and deviceId in (${deviceIds:sqlstring})\\n    and age >= 18\\n    and gender in ('female', 'male')\\n)\\nselect case\\n         when 1 <= minutes and minutes < 5 then '1-5'\\n         when 5 <= minutes and minutes < 20 then '5-20'\\n         else '>20'\\n       end minutes,\\n       count(distinct faceid) visitors\\nfrom t1\\nwhere minutes >= 1\\ngroup by 1\\norder by 1\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{\"contextParameters\":[{\"name\":\"useApproximateCountDistinct\",\"value\":\"false\"}]}}",
+            "refId": "A",
+            "settings": {
+              "contextParameters": [
+                {
+                  "name": "useApproximateCountDistinct",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        ],
+        "title": "Residence Time",
+        "transparent": true,
+        "type": "piechart"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [
+      "bsure"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": {
+            "type": "grafadruid-druid-datasource",
+            "uid": "fret-druid"
+          },
+          "definition": "",
+          "description": "",
+          "includeAll": true,
+          "label": "Events",
+          "multi": true,
+          "name": "festivalIds",
+          "options": [],
+          "query": {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "select concat(externalId, ':', time_format(cast(startDateTime as timestamp), 'dd.MM. HH:mm'), ' - ', time_format(__time, 'dd.MM. HH:mm'), ' | ', name)\nfrom fret_demo\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\n  and '${__from:date}' <= __time\n  and _schema = 'api'\n  and _table = 'event'\n",
+              "queryType": "sql"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select concat(externalId, ':', time_format(cast(startDateTime as timestamp), 'dd.MM. HH:mm'), ' - ', time_format(__time, 'dd.MM. HH:mm'), ' | ', name)\\nfrom fret_demo\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+            "settings": {}
+          },
+          "refresh": 2,
+          "regex": "/^(?<value>[^:]*):(?<text>.*)/",
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": {
+            "type": "grafadruid-druid-datasource",
+            "uid": "fret-druid"
+          },
+          "definition": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select distinct concat(json_value(ds.dataSource, '$.externalId'), ':', json_value(ds.dataSource, '$.name'))\\nfrom fret_demo, unnest(json_query_array(dataSources, '$')) ds(dataSource)\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n  and json_value(ds.dataSource, '$.type') = 'LIVIA'\\n  and externalId in (${festivalIds:sqlstring})\\nunion all\\nvalues '<none>:<none>'\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+          "hide": 2,
+          "includeAll": true,
+          "label": "Devices",
+          "multi": true,
+          "name": "deviceIds",
+          "options": [],
+          "query": {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "select distinct concat(json_value(ds.dataSource, '$.externalId'), ':', json_value(ds.dataSource, '$.name'))\nfrom fret_demo, unnest(json_query_array(dataSources, '$')) ds(dataSource)\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\n  and '${__from:date}' <= __time\n  and _schema = 'api'\n  and _table = 'event'\n  and json_value(ds.dataSource, '$.type') = 'LIVIA'\n  and externalId in (${festivalIds:sqlstring})\nunion all\nvalues '<none>:<none>'",
+              "queryType": "sql"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select distinct concat(json_value(ds.dataSource, '$.externalId'), ':', json_value(ds.dataSource, '$.name'))\\nfrom fret_demo, unnest(json_query_array(dataSources, '$')) ds(dataSource)\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n  and json_value(ds.dataSource, '$.type') = 'LIVIA'\\n  and externalId in (${festivalIds:sqlstring})\\nunion all\\nvalues '<none>:<none>'\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+            "settings": {}
+          },
+          "refresh": 2,
+          "regex": "/^(?<value>[^:]+):(?<text>.*)/",
+          "sort": 7,
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "PT30M",
+            "value": "PT30M"
+          },
+          "includeAll": false,
+          "label": "Granularity",
+          "name": "granularity",
+          "options": [
+            {
+              "selected": false,
+              "text": "PT1M",
+              "value": "PT1M"
+            },
+            {
+              "selected": false,
+              "text": "PT5M",
+              "value": "PT5M"
+            },
+            {
+              "selected": false,
+              "text": "PT15M",
+              "value": "PT15M"
+            },
+            {
+              "selected": true,
+              "text": "PT30M",
+              "value": "PT30M"
+            },
+            {
+              "selected": false,
+              "text": "PT1H",
+              "value": "PT1H"
+            }
+          ],
+          "query": "PT1M, PT5M, PT15M, PT30M, PT1H",
+          "type": "custom"
+        },
+        {
+          "current": {
+            "text": "1",
+            "value": "1"
+          },
+          "hide": 2,
+          "name": "femaleBias",
+          "query": "1",
+          "skipUrlSync": true,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "text": "51.012012350000006,51.4999419,51.7589553,48.8498536,48.0586582,52.4909545,48.1507242,51.59626775,51.6135547,53.7580928",
+            "value": "51.012012350000006,51.4999419,51.7589553,48.8498536,48.0586582,52.4909545,48.1507242,51.59626775,51.6135547,53.7580928"
+          },
+          "datasource": {
+            "type": "grafadruid-druid-datasource",
+            "uid": "fret-druid"
+          },
+          "definition": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select\\n  array_to_string(array_agg(json_value(a.address, '$.location.lat' returning double)), ',')\\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n  and externalId in (${festivalIds:sqlstring})\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+          "hide": 2,
+          "includeAll": false,
+          "name": "latitudes",
+          "options": [],
+          "query": {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "select\n  array_to_string(array_agg(json_value(a.address, '$.location.lat' returning double)), ',')\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\n  and '${__from:date}' <= __time\n  and _schema = 'api'\n  and _table = 'event'\n  and externalId in (${festivalIds:sqlstring})\n",
+              "queryType": "sql"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select\\n  array_to_string(array_agg(json_value(a.address, '$.location.lat' returning double)), ',')\\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n  and externalId in (${festivalIds:sqlstring})\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+            "settings": {}
+          },
+          "refresh": 2,
+          "regex": "",
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "6.908705853952768,7.2967143,11.671153676866151,13.774534402601546,6.8682618,8.5539004,12.4466641,7.8117343,6.1427412,8.6735063",
+            "value": "6.908705853952768,7.2967143,11.671153676866151,13.774534402601546,6.8682618,8.5539004,12.4466641,7.8117343,6.1427412,8.6735063"
+          },
+          "datasource": {
+            "type": "grafadruid-druid-datasource",
+            "uid": "fret-druid"
+          },
+          "definition": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select\\n  array_to_string(array_agg(json_value(a.address, '$.location.lon' returning double)), ',')\\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n  and externalId in (${festivalIds:sqlstring})\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+          "hide": 2,
+          "includeAll": false,
+          "name": "longitudes",
+          "options": [],
+          "query": {
+            "builder": {
+              "intervals": {
+                "intervals": [
+                  "${__from:date:iso}/${__to:date:iso}"
+                ],
+                "type": "intervals"
+              },
+              "query": "select\n  array_to_string(array_agg(json_value(a.address, '$.location.lon' returning double)), ',')\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\n  and '${__from:date}' <= __time\n  and _schema = 'api'\n  and _table = 'event'\n  and externalId in (${festivalIds:sqlstring})\n",
+              "queryType": "sql"
+            },
+            "expr": "{\"builder\":{\"queryType\":\"sql\",\"query\":\"select\\n  array_to_string(array_agg(json_value(a.address, '$.location.lon' returning double)), ',')\\nfrom fret_demo, unnest(json_query_array(addresses, '$')) a(address)\\nwhere cast(startDateTime as timestamp) <= '${__to:date}'\\n  and '${__from:date}' <= __time\\n  and _schema = 'api'\\n  and _table = 'event'\\n  and externalId in (${festivalIds:sqlstring})\\n\",\"intervals\":{\"type\":\"intervals\",\"intervals\":[\"${__from:date:iso}/${__to:date:iso}\"]}},\"settings\":{}}",
+            "settings": {}
+          },
+          "refresh": 2,
+          "regex": "",
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "2023-06-30T22:00:00.000Z",
+      "to": "2023-07-31T21:59:59.000Z"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Demo",
+    "uid": "ddk30fztxlhc0a",
+    "version": 2,
+    "weekStart": ""
+  }
