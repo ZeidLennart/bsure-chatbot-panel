@@ -71,7 +71,7 @@ function convertDashboardData(panels: Panel[] | string): Target[] {
   }
 
   for (const panel of panels) {
-    if (!panel.targets || !Array.isArray(panel.targets)) continue;
+    if (!panel.targets || !Array.isArray(panel.targets)) {continue};
 
     for (const target of panel.targets) {
       response.push({
@@ -193,9 +193,9 @@ export const SimplePanel: React.FC<Props> = ({ data, options }) => {
 
     async function submitQuestion() {
       const dashboardData = await fetchDashboard();
-      if (!dashboardData) return;
+      if (!dashboardData){return};
 
-      if(chat.length == 0){
+      if(chat.length === 0){
 
         const newPanelData = await Promise.all(
           dashboardData
