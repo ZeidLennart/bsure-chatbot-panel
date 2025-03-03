@@ -7,7 +7,7 @@
     "keywords": ["panel", "API", "AI", "KI", "GROQ"],
     "description": "This Plugin si used to send a request enriched with the dashboard data to groq with with a user question.",
     "author": {
-      "name": "Bsure"
+      "name": "lennartzeidler"
     },
     "logos": {
       "small": "img/logo.svg",
